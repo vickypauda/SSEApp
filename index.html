@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock en Tiempo Real</title>
+</head>
+<body>
+<h1>Actualizaciones de Stock</h1>
+<ul id="stock-list"></ul>
+
+<script>
+    const eventSource = new EventSource('/events');
+
+    eventSource.onmessage = function(event) {
+        const listItem = document.createElement('li');
+        listItem.textContent = event.data;
+        document.getElementById('stock-list').appendChild(listItem);
+    };
+
+    eventSource.onerror = function(event) {
+        console.error("Error en la conexión SSE", event);
+        eventSource.close();
+    };
+</script>
+</body>
+</html>
